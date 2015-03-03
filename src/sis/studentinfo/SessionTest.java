@@ -33,6 +33,7 @@ abstract public class SessionTest extends TestCase {
 		assertEquals(1, session.getNumberOfStudents());
 		assertEquals(CREDITS, student1.getCredits());
 		assertEquals(student1, session.get(0));		
+		
 		Student student2 = new Student("coralee Devaughn");
 		session.enroll(student2);
 		assertEquals(CREDITS, student2.getCredits());

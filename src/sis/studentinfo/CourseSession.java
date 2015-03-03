@@ -143,10 +143,6 @@ public class CourseSession extends Session {
 		buffer.append(ROSTER_REPORT_FOOTER + students.size() + NEWLINE);
 	}
 
-	public void setNumberOfCredits(int numberOfCredits) {
-		this.numberOfCredits = numberOfCredits;
-	}
-
 }
 
 /**javadoc
