@@ -61,7 +61,7 @@ public class StudentTest extends TestCase {
  * 3.测试都通过开始重构代码，最后测试通过	
 */
 	
-	public void testCreater(){
+	public void testCreate(){
 
 		final String fristStudentName = "Jane Doe";
 		/*
@@ -70,10 +70,24 @@ public class StudentTest extends TestCase {
 		 * */
 		final Student firstStudent = new Student(fristStudentName);
 		assertEquals(fristStudentName, firstStudent.getName());
-
-		final String secondStudentName = "Jane Doe";
+		
+		assertEquals("Jane", firstStudent.getFirstName());
+		assertEquals("Doe", firstStudent.getLastName());
+		assertEquals("", firstStudent.getMiddleName());
+		
+		final String secondStudentName = "Blow";
 		final Student secondStudent = new Student(secondStudentName);
-		assertEquals(secondStudentName, secondStudent.getName());	
+		assertEquals(secondStudentName, secondStudent.getName());
+		assertEquals("", secondStudent.getFirstName());
+		assertEquals("Blow", secondStudent.getLastName());
+		assertEquals("", secondStudent.getMiddleName());
+		
+		final String thirdStudentName = "Raymond Douglas Davies";
+		final Student thirdStudent = new Student(thirdStudentName);
+		assertEquals(thirdStudentName, thirdStudent.getName());
+		assertEquals("Raymond", thirdStudent.getFirstName());
+		assertEquals("Davies", thirdStudent.getLastName());
+		assertEquals("Douglas", thirdStudent.getMiddleName());
 	}
 
 	/*public void testFullTime(){

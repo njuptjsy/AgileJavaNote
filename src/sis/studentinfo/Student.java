@@ -1,7 +1,10 @@
 ﻿package sis.studentinfo;
 
 import java.util.*;
-import java.util.List;
+
+import javax.swing.plaf.basic.BasicBorders.SplitPaneBorder;
+
+import org.omg.CORBA.StringHolder;
 
 public class Student implements Comparable<Student>{
 	//String myName;
@@ -38,16 +41,20 @@ public class Student implements Comparable<Student>{
 	
 	//重构删除private boolean isHonors = false;
 	private GradingStrategy gradingStrategy = new BasicGradingStrategy();
+	private String firstName = "";
+	private String middleName = "";//这两个变量并不一定会被赋值，所以必须初始化
+	private String lastName;
 	
-	
-	public Student (String name)
+	public Student (String fullName)
 	{
-		this.name = name;
+		this.name = fullName;
 		/*
 		 * 这里必须使用this.name,name = name;语句会让编译器以为这只是将name的值赋给其自身
 		消除歧义的方法有两种：1.给成员变量name换个名字一般起名anName,aName或者_name2.在成员变量前面加上this
 		*/
 		credits = 0;
+		List<String> nameParts = split(fullName);
+		setName(nameParts);
 	}
 	
 	public String getName()
@@ -179,6 +186,74 @@ public class Student implements Comparable<Student>{
 	 * */
 	void setGradingStrategy(GradingStrategy gradingStrategy){
 		this.gradingStrategy = gradingStrategy;
+	}
+	
+	public String getFirstName(){
+		return firstName;
+	}
+	
+	public String getMiddleName(){
+		return middleName;
+	}
+	
+	public String getLastName(){
+		return lastName;
+	}
+
+	/*private void setName(List<String> nameParts) {
+		if (nameParts.size() == 1) {
+			this.lastName = nameParts.get(0);
+		}
+		else if (nameParts.size() == 2) {
+			this.firstName = nameParts.get(0);
+			this.lastName = nameParts.get(1);
+		}
+		else if (nameParts.size() == 3) {
+			this.firstName = nameParts.get(0);
+			this.middleName = nameParts.get(1);
+			this.lastName = nameParts.get(2);
+		} 
+	}重构*/
+	
+	private void setName(List<String> nameParts) {
+		this.lastName = removeLast(nameParts);
+		String name = removeLast(nameParts);
+		if (nameParts.isEmpty()) {
+			this.firstName = name;
+		}
+		else {
+			this.middleName = name;
+			this.firstName = removeLast(nameParts);
+		}
+	}
+	
+	private String removeLast(List<String> list) {
+		if (list.isEmpty()) {
+			return "";
+		}
+		return list.remove(list.size() - 1);//删除相应位置的元素，并防护被删除的元素
+	}
+	
+	private List<String> split(String name) {
+		List<String> results = new ArrayList<String>();
+		
+		StringBuffer word = new StringBuffer();
+		for (int index = 0; index < name.length(); index++){
+			char ch = name.charAt(index);
+			if (ch != ' ') {//java中的字符用单引号而不是双引号
+				word.append(ch);
+			}
+			else {
+				if (word.length() > 0){
+					results.add(word.toString());
+					word = new StringBuffer();
+				}
+			}
+		}
+		if (word.length() > 0) {//将最后一个空格后面的单词加入list
+			results.add(word.toString());
+		}
+		return results;
 	}
 	
 }
