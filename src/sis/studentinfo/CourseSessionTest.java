@@ -1,6 +1,8 @@
 ﻿package sis.studentinfo;
 import java.util.*;//重构将原来的四个import语句变成一个*通配语句
 
+import javax.swing.RowFilter;
+
 /*
  * 包的用途：
  * 1.将一组类打包，未开发提供便利
@@ -142,5 +144,35 @@ public class CourseSessionTest extends SessionTest {
 	@Override
 	protected Session createSession(String department, String number,Date startDate) {
 		return CourseSession.create(department, number, startDate);
+	}
+
+	public void testLabeledBreak() {
+		List<List<String>> table = new ArrayList<List<String>>();
+		
+		List<String> row1 = new ArrayList<String>();
+		row1.add("5");
+		row1.add("2");
+		List<String> row2 = new ArrayList<String>();
+		row2.add("3");
+		row2.add("4");
+		
+		table.add(row1);
+		table.add(row2);
+		assertTrue(found(table,"3"));
+		assertFalse(found(table,"8"));
+	}
+	
+	private boolean found(List<List<String>> table, String target){
+		boolean found = false;
+		search://使用标签后，java遇到像break或者continue这样的跳转语句，就会直接将控制流转到标签所在处
+			for(List<String> row : table){
+				for(String value: row){
+					if (value.equals(target)) {
+						found = true;
+						break search;
+					}
+				}
+			}
+		return found;
 	}
 }

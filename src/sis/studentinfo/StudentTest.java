@@ -187,4 +187,30 @@ public class StudentTest extends TestCase {
 		student.setGradingStrategy(new HonorsGradingStrategy());
 		return student;
 	}
+	
+	public void testEndTrim(){
+		assertEquals("", endTrim(""));
+		assertEquals("  x", endTrim("  x  "));
+		assertEquals("xyz", endTrim("xyz"));
+		assertEquals("", endTrim("   "));
+		assertEquals("xxx", endTrim("xxx   "));
+	}
+
+	private String endTrim(String source) {
+		int i = source.length();
+		if (i == 0) {
+			return "";
+		}
+		else {
+			while ( i > 0) {
+				if (source.charAt(i-1) != ' ') {
+					break;
+				}
+			i--;	
+			}
+			return source.substring(0, i);
+		}
+
+	}
+
 }

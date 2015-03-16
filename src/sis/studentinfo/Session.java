@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 
-abstract public class Session implements Comparable<Session>  {
+abstract public class Session implements Comparable<Session>,Iterable<Student>  {
 	private String department;
 	private String number;
-	private List<Student> students = new ArrayList<Student>();
+	public List<Student> students = new ArrayList<Student>();
 	protected Date startDate;//protected表示只有该变量所在类和其子类可以访问这个变量,但是要注意同一包中的非子类也可以访问protected元素
 	private int numberOfCredits;
 	private static int count;
@@ -76,4 +77,23 @@ abstract public class Session implements Comparable<Session>  {
 		return endDate;
 	}
 
+	double averageGpaForPartTimeStudents(){
+		double total = 0.0;
+		int count = 0;
+		for (Student student: students) {//使用迭代器的方式Iterator<Student> it = students.iterator();it.hasNext();
+			if (student.isFullTime()) {
+				continue;
+			}
+			count++;
+			total += student.getGpa();
+		}
+		if (count == 0) {
+			return 0.0;
+		}
+		return total/count;
+	}
+	
+	public Iterator<Student> iterator(){
+		return students.iterator();
+	}
 }
