@@ -44,8 +44,9 @@ public class Student implements Comparable<Student>{
 	private String firstName = "";
 	private String middleName = "";//这两个变量并不一定会被赋值，所以必须初始化
 	private String lastName;
+	private List<Integer> charges = new ArrayList<Integer>();
 	
-	public Student (String fullName)
+ 	public Student (String fullName)
 	{
 		this.name = fullName;
 		/*
@@ -255,7 +256,18 @@ public class Student implements Comparable<Student>{
 		}
 		return results;
 	}
+
+	public void addCharges(int charge){
+		charges.add(new Integer(charge));
+	}
 	
+	public int totalCharges(){
+		int total = 0;
+		for (Integer charge: charges) {
+			total += charge.intValue();
+		}
+		return total;
+	}
 }
 
 /*

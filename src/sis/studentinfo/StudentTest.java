@@ -213,4 +213,11 @@ public class StudentTest extends TestCase {
 
 	}
 
+	public void testCharges(){
+		Student student = new Student("a");
+		student.addCharges(500);
+		student.addCharges(200);
+		student.addCharges(399);
+		assertEquals(1099, student.totalCharges());
+	}
 }
