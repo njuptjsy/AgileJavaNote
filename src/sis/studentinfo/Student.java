@@ -235,7 +235,7 @@ public class Student implements Comparable<Student>{
 		return list.remove(list.size() - 1);//删除相应位置的元素，并防护被删除的元素
 	}
 	
-	private List<String> split(String name) {
+	/*private List<String> split(String name) {
 		List<String> results = new ArrayList<String>();
 		
 		StringBuffer word = new StringBuffer();
@@ -255,16 +255,38 @@ public class Student implements Comparable<Student>{
 			results.add(word.toString());
 		}
 		return results;
-	}
+	}重构*/
+	
+	
+	/*private List<String> split(String name) {
+		List<String> results = new ArrayList<String>();
+		StringTokenizer tokenizer = new StringTokenizer(name , " ");
+			while (tokenizer.hasMoreElements()) {
+				results.add(tokenizer.nextToken());
+			}
+		
+		return results;
+	}再次重构，StringTokenizer不支持正则，使用String.split代替*/
 
+	private List<String> split(String fullName) {
+		//return Arrays.asList(name.split(" "));//这个语句会在removeList方法出报错，因为Arrays.asList返回的列表知识数组的另一种视图，对这个视图的每一个操作其实都是在对数组进行操作
+		List<String> results = new ArrayList<String>();
+			for (String name:fullName.split(" ")) {
+				results.add(name);
+			}
+		
+		return results;
+	}
+	
 	public void addCharges(int charge){
-		charges.add(new Integer(charge));
+		//charges.add(new Integer(charge));
+		charges.add(charge);//这里编译器发现charge可以包装成Integer类，就会进行自动装箱
 	}
 	
 	public int totalCharges(){
 		int total = 0;
-		for (Integer charge: charges) {
-			total += charge.intValue();
+		for (int charge: charges) {//利用自动拆箱的技术，将Integer类型变成其包装的基本类型
+			total += charge;
 		}
 		return total;
 	}
