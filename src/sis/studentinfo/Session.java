@@ -1,11 +1,14 @@
 ﻿package sis.studentinfo;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 abstract public class Session implements Comparable<Session>,Iterable<Student>  {
 	private String department;
@@ -14,6 +17,7 @@ abstract public class Session implements Comparable<Session>,Iterable<Student>  
 	protected Date startDate;//protected表示只有该变量所在类和其子类可以访问这个变量,但是要注意同一包中的非子类也可以访问protected元素
 	private int numberOfCredits;
 	private static int count;
+	private URL url;
 	
 	protected Session(String department, String number ,Date startDate){
 		this.department = department;
@@ -95,5 +99,23 @@ abstract public class Session implements Comparable<Session>,Iterable<Student>  
 	
 	public Iterator<Student> iterator(){
 		return students.iterator();
+	}
+
+	public void setUrl (String urlString) throws SessionException{
+		try {
+			this.url = new URL(urlString);
+		} catch (MalformedURLException e) {//在尽可能接近源头的地方捕获异常，并进行日志，让后在传递异常。
+			log(e);
+			throw new SessionException(e);//创建并抛出应用程序特定的异常，可以封装产生异常的特点实现细节
+			//这里封装了异常的根源MalformedURLException
+		}
+	}
+	
+	public URL getUrl(){
+		return url;
+	}
+	
+	private void log(Exception e){
+		e.printStackTrace();//将存储在异常当中的堆栈跟踪打印出来（缺省打印到系统控制台）
 	}
 }

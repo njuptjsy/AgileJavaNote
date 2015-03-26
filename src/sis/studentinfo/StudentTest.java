@@ -1,4 +1,8 @@
 ﻿package sis.studentinfo;
+import java.util.logging.Handler;
+import java.util.logging.Logger;
+
+
 //重构加入
 import junit.framework.TestCase;
 public class StudentTest extends TestCase {
@@ -220,4 +224,29 @@ public class StudentTest extends TestCase {
 		student.addCharges(399);
 		assertEquals(1099, student.totalCharges());
 	}
+
+	public void testBadlyFormattedName(){
+		final String studentName = "a b c d";
+		Handler handler = new TestHandler();
+		Student.LOGGER.addHandler(handler);
+		try {
+			new Student(studentName);
+			fail("expected exception from 4-part name");
+		} catch (StudentNameFormatException expectedException) {
+			//expectedException.printStackTrace();将捕获到的异常的堆栈打印到控制台
+			String message = String.format(Student.TOO_MANY_NAME_PARTS_MSG, studentName, Student.MAX_NAME_PARTS);
+			assertEquals(message, expectedException.getMessage());
+			assertEquals(message,((TestHandler)handler).getMessage());
+		}
+	}
+
+	public void testLoggingHierarchy(){
+		Logger logger = Logger.getLogger("sis.studentinfo.Student");
+		assertTrue(logger == Logger.getLogger("sis.studentinfo.Student"));//同一个类，只会为其新建一个logger对象
+		
+		Logger parent = Logger.getLogger("sis.studentinfo");//证明了logger对象的层次结构与类的层次结构想对应
+		assertEquals(parent, logger.getParent());//在较高层次上设置的日志等级，将被运用在没有设置自身日志等级的子logger中
+		assertEquals(Logger.getLogger("sis"), parent.getParent());
+	}
+	
 }

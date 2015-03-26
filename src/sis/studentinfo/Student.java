@@ -1,6 +1,7 @@
 ﻿package sis.studentinfo;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 import javax.swing.plaf.basic.BasicBorders.SplitPaneBorder;
 
@@ -45,8 +46,11 @@ public class Student implements Comparable<Student>{
 	private String middleName = "";//这两个变量并不一定会被赋值，所以必须初始化
 	private String lastName;
 	private List<Integer> charges = new ArrayList<Integer>();
+	public static final int MAX_NAME_PARTS = 3;
+	static final String TOO_MANY_NAME_PARTS_MSG = "Student name '%s' contains more than %d parts";
+	final static Logger LOGGER = Logger.getLogger(Student.class.getName());
 	
- 	public Student (String fullName)
+ 	public Student (String fullName) 
 	{
 		this.name = fullName;
 		/*
@@ -55,6 +59,12 @@ public class Student implements Comparable<Student>{
 		*/
 		credits = 0;
 		List<String> nameParts = split(fullName);
+		
+		if (nameParts.size() > MAX_NAME_PARTS) {
+			String message = String.format(Student.TOO_MANY_NAME_PARTS_MSG, fullName, Student.MAX_NAME_PARTS);
+			Student.LOGGER.info(message);
+			throw new StudentNameFormatException(message);
+		}
 		setName(nameParts);
 	}
 	
@@ -113,6 +123,7 @@ public class Student implements Comparable<Student>{
 	*/
 	
 	double getGpa(){
+		Student.LOGGER.fine("begin getGpa "+ System.currentTimeMillis());
 		if (grades.isEmpty()) {
 			return 0.0;
 		}//根据某个特定条件判断是否返回的if语句被称为防卫语句
@@ -120,7 +131,8 @@ public class Student implements Comparable<Student>{
 		for (Grade grade : grades) {
 			//重构：total += gradePointsFor(grade);将gradePointsFor方法并入getGpa
 			total += gradingStrategy.getGradePointsFor(grade);
-		}	
+		}
+		Student.LOGGER.fine("end getGpa "+ System.currentTimeMillis());
 		return total/grades.size();
 	}
 	
@@ -156,9 +168,6 @@ public class Student implements Comparable<Student>{
 		return points;第二次重构：使用接口将各种学生计算分数的策略分离成一个个单独的类
 		return gradingStrategy.getGradePointsFor(grade);
 	}第三次重构：删除代码*/
-	
-
-	
 
 	@Override
 	public int compareTo(Student o) {
@@ -290,6 +299,8 @@ public class Student implements Comparable<Student>{
 		}
 		return total;
 	}
+
+	
 }
 
 /*
