@@ -26,10 +26,10 @@ public class CourseSession extends Session {
 	}*/
 
 
-	public static CourseSession create(String department, String number, Date startDate) {
+	public static CourseSession create(Course course, Date startDate) {
 		//重构删除incrementCount();
 		//在静态方法中调用的方法必须也是static的
-		return new CourseSession(department, number, startDate);//就近原则
+		return new CourseSession(course, startDate);//就近原则
 	}
 
 	/*protected CourseSession(String department, String number,Date startDate) {
@@ -41,8 +41,8 @@ public class CourseSession extends Session {
 		//incrementCount();虽然这样调用类方法也是可以的，但是为了避免混淆应该避免这么做
 	}重构*/
 
-	protected CourseSession(String department, String number,Date startDate) {
-		super(department,number,startDate);
+	protected CourseSession(Course course,Date startDate) {
+		super(course,startDate);
 		CourseSession.incrementCount();
 	}
 	private static void incrementCount() {

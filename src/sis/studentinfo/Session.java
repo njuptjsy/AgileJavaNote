@@ -10,18 +10,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
+
 abstract public class Session implements Comparable<Session>,Iterable<Student>  {
-	private String department;
-	private String number;
+	private Course course;
 	public List<Student> students = new ArrayList<Student>();
 	protected Date startDate;//protected表示只有该变量所在类和其子类可以访问这个变量,但是要注意同一包中的非子类也可以访问protected元素
 	private int numberOfCredits;
 	private static int count;
 	private URL url;
 	
-	protected Session(String department, String number ,Date startDate){
-		this.department = department;
-		this.number = number;
+	protected Session(Course course ,Date startDate){
+		this.course = course;
 		this.startDate = startDate;
 	}
 	
@@ -38,11 +38,11 @@ abstract public class Session implements Comparable<Session>,Iterable<Student>  
 	}
 
 	public String getDepartment(){
-		return department;
+		return course.getDepartment();
 	}
 	
 	public String getNumber(){
-		return number;
+		return course.getNumber();
 	}
 
 	public int getNumberOfStudents() {//int -2147483648~2147483647,java中的数字不是对象	

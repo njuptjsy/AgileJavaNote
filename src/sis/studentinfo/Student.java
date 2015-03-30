@@ -49,6 +49,7 @@ public class Student implements Comparable<Student>{
 	public static final int MAX_NAME_PARTS = 3;
 	static final String TOO_MANY_NAME_PARTS_MSG = "Student name '%s' contains more than %d parts";
 	final static Logger LOGGER = Logger.getLogger(Student.class.getName());
+	private String id = "";
 	
  	public Student (String fullName) 
 	{
@@ -300,7 +301,13 @@ public class Student implements Comparable<Student>{
 		return total;
 	}
 
+	public void setId(String id){
+		this.id = id;
+	}
 	
+	public String getId(){
+		return id;
+	}
 }
 
 /*
