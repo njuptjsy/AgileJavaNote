@@ -3,7 +3,7 @@ package sis.studentinfo;
 import junit.framework.TestCase;
 
 public class Performance extends TestCase{
-	private int[] tests;//不要用这种方式private int tests[];定义数组
+	private int[] tests = {};//不要用这种方式private int tests[];定义数组
 	public void setNumOfTests(int numberOfTests) {
 		tests = new int[numberOfTests];//这里才开始为数组分配内存，制定数组的类型和数组中元素的个数
 	}
@@ -17,6 +17,9 @@ public class Performance extends TestCase{
 	}
 	
 	public double average(){
+		if (tests.length == 0) {
+			return 0.0;
+		}
 		double total = 0.0;
 		for (int sorce: tests) {
 			total += sorce;

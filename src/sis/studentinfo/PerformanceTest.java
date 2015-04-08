@@ -37,4 +37,9 @@ public class PerformanceTest extends TestCase{
 		//由于数组本身是应用所以用等于号和equals比较都不相等，java提供了arrays.equals方法用于比较两个数组的内容
 	}
 	
+	public void testAverageForNoScores(){
+		Performance performance = new Performance();
+		assertEquals(0.0, performance.average());
+	}
+	
 }

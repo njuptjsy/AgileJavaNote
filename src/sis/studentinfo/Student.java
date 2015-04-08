@@ -50,6 +50,7 @@ public class Student implements Comparable<Student>{
 	static final String TOO_MANY_NAME_PARTS_MSG = "Student name '%s' contains more than %d parts";
 	final static Logger LOGGER = Logger.getLogger(Student.class.getName());
 	private String id = "";
+	private int setting = 0x0;
 	
  	public Student (String fullName) 
 	{
@@ -307,6 +308,41 @@ public class Student implements Comparable<Student>{
 	
 	public String getId(){
 		return id;
+	}
+
+	public enum Flag{
+		ON_CAMPUS(1),
+		TAX_EXEMPT(2),
+		MINOR(4),
+		TROUBLEMAKER(8);
+		
+		private int mask;
+		
+	    Flag(int mask) {
+	    	this.mask = mask;
+		}
+	}
+	
+	
+	
+	public void set(Flag... flags){
+		for(Flag flag:flags){
+			setting |= flag.mask;//位或
+		}
+	}
+	
+	public void unset(Flag...flags){
+		for(Flag flag: flags){
+			setting &= -flag.mask;//按位求反
+		}
+	}
+	
+	public boolean isOn(Flag flag){
+		return (setting & flag.mask) == flag.mask;
+	}
+	
+	public boolean isOff(Flag flag){
+		return !isOn(flag);
 	}
 }
 
