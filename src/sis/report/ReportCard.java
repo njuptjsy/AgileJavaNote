@@ -18,7 +18,7 @@ public class ReportCard {
 		return getMessage().get(grade);
 	}
 	
-	private Map<Student.Grade, String> getMessage() {
+	public Map<Student.Grade, String> getMessage() {
 		if (messages == null) {
 			loadMessage();
 		}
@@ -28,9 +28,9 @@ public class ReportCard {
 	private void loadMessage() {//延迟初始化，在使用某个成员变量时才对其进行初始化
 		messages = new EnumMap<Student.Grade, String>(Student.Grade.class);//Creates an empty enum map with the specified key type
 		messages.put(Student.Grade.A, A_MESSAGE);
-		messages.put(Student.Grade.A, B_MESSAGE);
-		messages.put(Student.Grade.A, C_MESSAGE);
-		messages.put(Student.Grade.A, D_MESSAGE);
-		messages.put(Student.Grade.A, F_MESSAGE);
+		messages.put(Student.Grade.B, B_MESSAGE);
+		messages.put(Student.Grade.C, C_MESSAGE);
+		messages.put(Student.Grade.D, D_MESSAGE);
+		messages.put(Student.Grade.F, F_MESSAGE);
 	}
 }
