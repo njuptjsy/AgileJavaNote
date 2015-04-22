@@ -1,5 +1,8 @@
 ﻿package sis.studentinfo;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -10,11 +13,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.tools.JavaCompiler;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 
-abstract public class Session implements Comparable<Session>,Iterable<Student>  {
+abstract public class Session implements Comparable<Session>,Iterable<Student>,java.io.Serializable  {
+    private transient String name;
 	private Course course;
-	public List<Student> students = new ArrayList<Student>();
+	public transient List<Student> students = new ArrayList<Student>();//加入transient表示在序列化这个类对象的过程中跳过这个成员变量
 	protected Date startDate;//protected表示只有该变量所在类和其子类可以访问这个变量,但是要注意同一包中的非子类也可以访问protected元素
 	private int numberOfCredits;
 	private static int count;
@@ -117,5 +122,27 @@ abstract public class Session implements Comparable<Session>,Iterable<Student>  
 	
 	private void log(Exception e){
 		e.printStackTrace();//将存储在异常当中的堆栈跟踪打印出来（缺省打印到系统控制台）
+	}
+
+	public int getNumberOfCredits(){
+		return numberOfCredits;
+	}
+
+	private void writeObject(ObjectOutputStream output)throws IOException{
+		output.defaultWriteObject();//将所有非transient的成员变量写入到流中
+		output.writeInt(students.size());
+		for (Student student: students) {
+			output.writeObject(student.getName());
+		}
+	}
+	
+	private void readObject(ObjectInputStream input) throws Exception{
+		input.defaultReadObject();
+		students = new ArrayList<Student>();
+		int size = input.readInt();
+		for (int i = 0; i < size; i++) {
+			String lastName = (String)input.readObject();
+			students.add(Student.findByLastName(lastName));
+		}
 	}
 }

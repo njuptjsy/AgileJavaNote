@@ -1,6 +1,8 @@
 package sis.studentinfo;
 
-public class Course {//用于构造简单的数据对象
+import javax.tools.JavaCompiler;
+
+public class Course implements java.io.Serializable{//用于构造简单的数据对象
 	private String department;
 	private String number;
 	
