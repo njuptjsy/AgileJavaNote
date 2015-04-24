@@ -1,5 +1,6 @@
 ﻿package sis.studentinfo;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -7,7 +8,7 @@ import javax.swing.plaf.basic.BasicBorders.SplitPaneBorder;
 
 import org.omg.CORBA.StringHolder;
 
-public class Student implements Comparable<Student>{
+public class Student implements Comparable<Student>,Serializable{
 	//String myName;
 	//改成更加专业的名字
 	

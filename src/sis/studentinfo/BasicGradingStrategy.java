@@ -1,12 +1,14 @@
 ﻿package sis.studentinfo;
 
+import java.io.Serializable;
+
 import sis.studentinfo.Student.Grade;
 /*
  * abstract public class BasicGradingStrategy implements GradingStrategy{
 	abstract public int getGradePointsFor(Student.Grade grade);
  * 重构，在BasicGradingStrategy类中实现getGradePointsFor方法进一步消除代码的重复
  * */
- public class BasicGradingStrategy implements GradingStrategy{
+ public class BasicGradingStrategy implements GradingStrategy ,Serializable{
 	/*public int getGradePointsFor(Grade grade) {
 		return basicGradePointsFor(grade);
 	}
