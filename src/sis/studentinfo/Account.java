@@ -8,7 +8,7 @@ import com.jimbob.ach.AchResponse;
 import com.jimbob.ach.AchStatus;
 import com.jimbob.ach.AchTransactionData;
 
-public class Account {
+public class Account implements Accountable{
 	private BigDecimal balance = new BigDecimal("0.00");
 	private int transactionCount = 0;
 	private String bankAba;
@@ -37,7 +37,7 @@ public class Account {
 		return balance;
 	}
 
-	public Object transactionAverage() {
+	public BigDecimal transactionAverage() {
 		return balance.divide(new BigDecimal(transactionCount), BigDecimal.ROUND_HALF_UP);
 	}
 	
