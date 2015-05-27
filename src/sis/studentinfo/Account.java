@@ -89,4 +89,14 @@ public class Account implements Accountable{
 	void setAch(Ach ach){
 		this.ach = ach;
 	}
+
+	public synchronized void withDraw(BigDecimal amount) {
+		if (amount.compareTo(balance) > 0) {
+			return;
+		}
+		try {
+			Thread.sleep(1);
+		} catch (InterruptedException e) {}
+		balance = balance.subtract(amount);//BigDecimal提供的减法
+	}
 }

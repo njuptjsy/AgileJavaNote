@@ -70,4 +70,16 @@ public class AccountTest extends TestCase{
 			}
 		};
 	}
+
+	public void testWithDraw() throws Exception{
+		account.credit(new BigDecimal("100.00"));
+		account.withDraw(new BigDecimal("40.00"));
+		assertEquals(new BigDecimal("60.00"), account.getBalance());
+	}
+	
+	public void testWithDrawInsufficientFunds(){
+		account.credit(new BigDecimal("100.00"));
+		account.withDraw(new BigDecimal("140.00"));
+		assertEquals(new BigDecimal("100.00"), account.getBalance());
+	}
 }
