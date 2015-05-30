@@ -48,7 +48,7 @@ public class Search {
 			exception = e;
 		}
 	}
-
+	
 	private void searchUrl() throws IOException{
 //		URLConnection connection = url.openConnection();
 //		InputStream input = connection.getInputStream();

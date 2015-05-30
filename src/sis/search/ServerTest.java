@@ -1,5 +1,7 @@
 package sis.search;
 
+import java.util.List;
+
 import sis.db.TestUtil;
 import sis.util.LineWriter;
 import junit.framework.TestCase;
@@ -35,24 +37,54 @@ public class ServerTest extends TestCase{
 	
 	public void testSearch() throws Exception {
 		long start = System.currentTimeMillis();
-		for (String url:URLS)
-			server.add(new Search(url, "XXX"));
+		executeSearches();
 		long elapsed = System.currentTimeMillis() - start;
-		long averageLatency = elapsed / URLS.length;
-		assertTrue(averageLatency < 20);
-		assertTrue(waitForResults());
+		assertTrue(elapsed < 20);
+		waitForResults();
 	}
 	
-	private boolean waitForResults(){//挂起当前线程，直到搜索线程执行完毕
+	private void executeSearches() throws Exception{
+		for (String url:URLS){
+			server.add(new Search(url, "xxx"));
+		}
+	}
+
+	public void testLogs() throws Exception{
+		executeSearches();
+		waitForResults();
+		verifyLogs();
+	}
+	
+	private void verifyLogs() {//检查log的数量是不是搜索次数的两倍
+		List<String> list = server.getLog();
+		assertEquals(URLS.length * 2, list.size());
+		for (int i = 0; i < URLS.length; i += 2) {
+			verifySameSearch(list.get(i),list.get(i + 1));
+		}
+	}
+	
+	private void verifySameSearch(String startSearchMsg, String endSearchMsg) {//检查每一对start和end是不是属于同一个搜索线程
+		String startSearch = substring(startSearchMsg,Server.START_MSG);
+		String endSearch = substring(endSearchMsg,Server.END_MSG);
+		assertEquals(startSearch, endSearch);
+	}
+	
+	private String substring(String string,String upTo){//返回upto字符串之前的字符串字串
+		int endIndex = string.indexOf(upTo);
+		assertTrue("didn't find" + upTo + "in" + string, endIndex != 1);
+		return string.substring(0,endIndex);
+	}
+
+	private void waitForResults(){//挂起当前线程，直到搜索线程执行完毕
 		long start = System.currentTimeMillis();
 		while (numberOfResults < URLS.length) {
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {}
 			if (System.currentTimeMillis() - start > TIMEOUT) {
-				return false;
+				fail("timeout");
 			}
 		}
-		return true;
 	}
+	
 }
