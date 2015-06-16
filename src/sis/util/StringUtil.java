@@ -1,4 +1,7 @@
 package sis.util;
+
+import java.util.List;
+
 /**测试一个字串在给的字符串出现了几次*/
 public class StringUtil {
 	static public int occurrences(String string, String subString){//获得匹配到的次数
@@ -12,5 +15,23 @@ public class StringUtil {
 			}
 		}
 		return occurrences;
+	}
+	
+	public static String concatenate(List<?> list){
+		StringBuffer builder = new StringBuffer();
+		for (Object element: list) {
+			builder.append(String.format("%s%n", element));
+		}
+		return builder.toString();
+	}
+	
+	public static String concatenateNumbers(List<? extends Number> list, int decimalPlaces){//不论列表中是Number的那个子类对象，都可以将其连接并打印
+		String decimalFormat = "%." + decimalPlaces + "f";//规定精读是小数点后decimalPlaces位
+		StringBuffer builder = new StringBuffer();
+		for (Number element:list) {
+			double value = element.doubleValue();//Returns the value of the specified number as a double
+			builder.append(String.format(decimalFormat + "%n", value));
+		}
+		return builder.toString();
 	}
 }

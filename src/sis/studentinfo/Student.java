@@ -28,7 +28,7 @@ public class Student implements Comparable<Student>,Serializable{
 		B(3),
 		C(2),
 		D(1),
-		F(0);//定义了每个枚举对应的数
+		F(0);//构造了五个grade枚举对象
 		
 		private int points;//枚举的成员变量
 		
